@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
-import { NFTData, TransferEvent } from "./types";
+import { NFTData, NFTActivity } from "./types";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 dotenv.config();
 
+//https://mighty-beach-50714-fb208d5a2695.herokuapp.com/api/nft/ethereum/0xed5af388653567af2f388e6224dc7c4b3241c544/4666
 app.get(
   "/api/nft/:chain/:contractAddress/:tokenId",
   async (req: Request, res: Response) => {
@@ -27,7 +28,7 @@ app.get(
       );
       const nftData = nftResponse.data;
 
-      const activityResponse = await axios.get<TransferEvent[]>(
+      const activityResponse = await axios.get<NFTActivity>(
         `https://api.simplehash.com/api/v0/nfts/transfers/${chain}/${contractAddress}/${tokenId}`,
         {
           headers: {
